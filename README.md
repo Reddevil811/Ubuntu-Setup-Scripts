@@ -30,7 +30,7 @@ Then execute them in the terminal in the sequence of filenames using `./1-BasicS
 Additional scripts to built libraries from source:
 * `Build-ML.sh` - Compiles commonly used ML/DL libraries from source, so that it is optimized to run on your computer
 * `Build-OpenCV.sh` - Compiles the latest tag of OpenCV+Contrib from source on your machine with focus on optimization of execution of OpenCV code.
-
+* `Nvidia-Cuda-Cudnn` - Instructions to install the correct Nvidia Driver, CUDA and CUDNN with the appropriate version of tensorflow.
 
 ## Major Alterations
 * Default python will be changed to Anaconda, with the latest Python 3. Anaconda Python will be installed in `/opt/anaconda3/` so that it is accessible by multiple users
@@ -128,4 +128,3 @@ In the description of shortcuts below, if two keys are connected with a `+`, the
 
 ## Alternatives
 * A Ubuntu customization dedicated to [robotics](https://github.com/ahundt/robotics_setup)
-
