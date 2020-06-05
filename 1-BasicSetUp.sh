@@ -118,36 +118,42 @@ if [[ -n $(echo $PATH | grep 'conda') ]]; then
     echo "Anaconda is already installed, skipping installation"
     echo "To reinstall, delete the Anaconda install directory and remove from PATH as well"
 else
+    if [[ ! -n $CIINSTALL ]]; then
+    read -p "Install Anaconda? (y/n)" tempvar
+    fi
+    tempvar=${tempvar:-q}
+    if [ "$tempvar" = "y" ]; then
+        spatialPrint "Installing the latest Anaconda Python in /opt/anaconda3"
+        continuum_website=https://repo.continuum.io/archive/
+        # Stepwise filtering of the html at $continuum_website
+        # Get the topmost line that matches our requirements, extract the file name.
+        latest_anaconda_setup=$(wget -q -O - $continuum_website index.html | grep "Anaconda3-" | grep "Linux" | grep "86_64" | head -n 1 | cut -d \" -f 2)
+        aria2c --file-allocation=none -c -x 10 -s 10 -o anacondaInstallScript.sh --dir ./extras ${continuum_website}${latest_anaconda_setup}
+        sudo mkdir -p /opt/anaconda3 && sudo chmod ugo+w /opt/anaconda3
+        execute bash ./extras/anacondaInstallScript.sh -f -b -p /opt/anaconda3
 
-    spatialPrint "Installing the latest Anaconda Python in /opt/anaconda3"
-    continuum_website=https://repo.continuum.io/archive/
-    # Stepwise filtering of the html at $continuum_website
-    # Get the topmost line that matches our requirements, extract the file name.
-    latest_anaconda_setup=$(wget -q -O - $continuum_website index.html | grep "Anaconda3-" | grep "Linux" | grep "86_64" | head -n 1 | cut -d \" -f 2)
-    aria2c --file-allocation=none -c -x 10 -s 10 -o anacondaInstallScript.sh --dir ./extras ${continuum_website}${latest_anaconda_setup}
-    sudo mkdir -p /opt/anaconda3 && sudo chmod ugo+w /opt/anaconda3
-    execute bash ./extras/anacondaInstallScript.sh -f -b -p /opt/anaconda3
+        spatialPrint "Setting up your anaconda"
+        execute /opt/anaconda3/bin/conda update conda -y
+        execute /opt/anaconda3/bin/conda clean --all -y
+        execute /opt/anaconda3/bin/conda install ipython -y
 
-    spatialPrint "Setting up your anaconda"
-    execute /opt/anaconda3/bin/conda update conda -y
-    execute /opt/anaconda3/bin/conda clean --all -y
-    execute /opt/anaconda3/bin/conda install ipython -y
+        execute /opt/anaconda3/bin/conda install libgcc -y
+        execute /opt/anaconda3/bin/pip install numpy scipy matplotlib scikit-learn scikit-image jupyter notebook pandas h5py cython jupyterlab
+        execute /opt/anaconda3/bin/pip install msgpack
+        execute /opt/anaconda3/bin/conda install line_profiler -y
+        sed -i.bak "/anaconda3/d" ~/.zshrc
 
-    execute /opt/anaconda3/bin/conda install libgcc -y
-    execute /opt/anaconda3/bin/pip install numpy scipy matplotlib scikit-learn scikit-image jupyter notebook pandas h5py cython jupyterlab
-    execute /opt/anaconda3/bin/pip install msgpack
-    execute /opt/anaconda3/bin/conda install line_profiler -y
-    sed -i.bak "/anaconda3/d" ~/.zshrc
+        /opt/anaconda3/bin/conda info -a
 
-    /opt/anaconda3/bin/conda info -a
-
-    spatialPrint "Adding anaconda to path variables"
-    {
-        echo "# Anaconda Python. Change the \"conda activate base\" to whichever environment you would like to activate by default"
-        echo ". /opt/anaconda3/etc/profile.d/conda.sh"
-        echo "conda activate base"
-    } >> ~/.zshrc
-
+        spatialPrint "Adding anaconda to path variables"
+        {
+            echo "# Anaconda Python. Change the \"conda activate base\" to whichever environment you would like to activate by default"
+            echo ". /opt/anaconda3/etc/profile.d/conda.sh"
+            echo "conda activate base"
+        } >> ~/.zshrc
+    else
+        spatialPrint "Skipping Anaconda Installation"
+    fi
 fi # Anaconda Installation end
 
 # echo "*************************** NOTE *******************************"
@@ -160,11 +166,17 @@ fi # Anaconda Installation end
 execute sudo apt-get install pciutils
 
 ## Detect if an Nvidia card is attached, and install the graphics drivers automatically
-if [[ -n $(lspci | grep -i nvidia) ]]; then
-    spatialPrint "Installing Display drivers and any other auto-detected drivers for your hardware"
-    execute sudo add-apt-repository ppa:graphics-drivers/ppa -y
-    execute sudo apt-get update
-    execute sudo ubuntu-drivers autoinstall
+if [[ ! -n $CIINSTALL ]]; then
+read -p "Install Nvidia Drivers automatically (NOT RECOMMENDED)? (y/n)" tempvar
+fi
+tempvar=${tempvar:-q}
+if [ "$tempvar" = "y" ]; then
+    if [[ -n $(lspci | grep -i nvidia) ]]; then
+        spatialPrint "Installing Display drivers and any other auto-detected drivers for your hardware"
+        execute sudo add-apt-repository ppa:graphics-drivers/ppa -y
+        execute sudo apt-get update
+        execute sudo ubuntu-drivers autoinstall
+    fi
 fi
 
 spatialPrint "The script has finished."
