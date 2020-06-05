@@ -10,12 +10,12 @@ Every script is rock stable and runs against [Travis CI](https://travis-ci.org) 
 
 | 1-BasicSetUp and 2-GenSoftware | 3-ML-Basic | Build-OpenCV  | Build-OpenCV in a conda env |
 |-------------------|-------------------|-------------------|--------------------|
-| [![Build1][6]][11] | [![Build2][9]][11] | [![Build3][7]][11] | [![Build4][10]][11] |
+| [![Build1][5]][11] | [![Build2][7]][11] | [![Build3][6]][11] | [![Build4][8]][11] |
 
+[5]: https://travis-matrix-badges.herokuapp.com/repos/rsnk96/Ubuntu-Setup-Scripts/branches/master/5
 [6]: https://travis-matrix-badges.herokuapp.com/repos/rsnk96/Ubuntu-Setup-Scripts/branches/master/6
 [7]: https://travis-matrix-badges.herokuapp.com/repos/rsnk96/Ubuntu-Setup-Scripts/branches/master/7
-[9]: https://travis-matrix-badges.herokuapp.com/repos/rsnk96/Ubuntu-Setup-Scripts/branches/master/9
-[10]: https://travis-matrix-badges.herokuapp.com/repos/rsnk96/Ubuntu-Setup-Scripts/branches/master/10
+[8]: https://travis-matrix-badges.herokuapp.com/repos/rsnk96/Ubuntu-Setup-Scripts/branches/master/8
 [11]: https://travis-ci.org/rsnk96/Ubuntu-Setup-Scripts
 
 ## Usage instructions
@@ -96,14 +96,14 @@ Additional scripts to built libraries from source:
 * `Build-ML.sh`
     * Building Tensorflow from source has different configuration options, info on which can be seen on [Tensorflow's Build from Source page](https://www.tensorflow.org/install/source). Note that by default, 2.x version of Tensorflow will be built, to build 1.x version, add `--config=v1` to the bazel build command
 * If you want to install a specific version of OpenCV or Tensorflow, i.e different from the latest release, make the following changes. The scripts should work with different versions but they haven't been tested
-  * OpenCV   
-  Comment out the [line fetching the latest release tag](https://github.com/rsnk96/Ubuntu-Setup-Scripts/blob/master/Build-OpenCV.sh#L170) in the `Build-OpenCV` script.  
-  Add the line below the above commented out one specifying the OpenCV version which you want like this: `latest_tag="3.4.5"`  
-  Alternatively, you could just replace `$latest_tag` with the tag of the version in the following 2 lines: `git checkout -f $latest_tag`  
+  * OpenCV
+  Comment out the [line fetching the latest release tag](https://github.com/rsnk96/Ubuntu-Setup-Scripts/blob/master/Build-OpenCV.sh#L170) in the `Build-OpenCV` script.
+  Add the line below the above commented out one specifying the OpenCV version which you want like this: `latest_tag="3.4.5"`
+  Alternatively, you could just replace `$latest_tag` with the tag of the version in the following 2 lines: `git checkout -f $latest_tag`
   Make sure that the tag of the OpenCV version you want is correct. The tags of all the releases can be checked here - [https://github.com/opencv/opencv/tags](https://github.com/opencv/opencv/tags)
 
-  * Tensorflow  
-  Similar to above, locate the [line fetching the latest release tag](https://github.com/rsnk96/Ubuntu-Setup-Scripts/blob/master/Build-ML.sh#L120) of Tensorflow and replace with the tag of the version required.  
+  * Tensorflow
+  Similar to above, locate the [line fetching the latest release tag](https://github.com/rsnk96/Ubuntu-Setup-Scripts/blob/master/Build-ML.sh#L120) of Tensorflow and replace with the tag of the version required.
   The tags of all the Tensorflow releases can be checked here - [https://github.com/tensorflow/tensorflow/tags](https://github.com/tensorflow/tensorflow/tags)
 * These scripts are written and tested on the following configurations -
   * Ubuntu 16.04 & 18.04
@@ -114,7 +114,7 @@ Additional scripts to built libraries from source:
 
 * Docker Images
   * An example `Dockerfile` is present in the repository, which builds OpenCV with CUDA support enabled. Customize it as required for specific requirements such as different CUDA versions, CPU-only images, etc.
-  * Some images built using these scripts can be found at [Docker Hub](https://hub.docker.com/repository/docker/rajat2004/ubuntu-setup-scripts)
+  * Some images built using these scripts can be found at [Docker Hub](https://hub.docker.com/r/rajat2004/ubuntu-setup-scripts)
 
 ## Tmux shortcuts conf:
 In the description of shortcuts below, if two keys are connected with a `+`, then the second key is to be pressed while keeping the first key pressed. If two keys are connected with a ` `(space), then the previous key/keys are to be released before the next key is pressed. If two keys are separated by a `/`, then it means you can choose any of the specified keys
@@ -129,5 +129,3 @@ In the description of shortcuts below, if two keys are connected with a `+`, the
 ## Alternatives
 * A Ubuntu customization dedicated to [robotics](https://github.com/ahundt/robotics_setup)
 
-## CUDA and CUDNN installation
-* check out [guide](cuda-installtion.md)
