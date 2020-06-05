@@ -16,7 +16,7 @@ To install Nvidia drivers visit [page](https://www.nvidia.in/Download/index.aspx
  - Go to the cuda downloads [website](https://developer.nvidia.com/cuda-10.0-download-archive). Tensorflow 1.14.0 is compactible with CUDA 10.0 and CUDNN 7.4.1.
  - Choose the required versions from the available ones.
  - In case of Ubuntu choose the deb (local) from the options and follow the instructions on the page.
- - **Note** the last step `sudo apt-get install cuda` installs the cuda toolkit with nvidia drivers. Hence if you already have nvidia drivers installed it might cause some problems.
+ - **Note** the last step `sudo apt-get install cuda` installs the cuda toolkit with nvidia drivers. Hence if you already have nvidia drivers installed it might cause some problems. Hence do `sudo apt-get install cuda-toolkit-10.0` which just install the cuda toolkit without the drivers. 
 
 ## Installing CUDNN
  - Go to the official [webpage](https://developer.nvidia.com/cudnn) and download the required version. Once again download 7.4.1 if you want to use tensorflow 1.14 and for the appropriate cuda version.
